@@ -5,8 +5,8 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="21"
-        android:targetSdkVersion="21" />
+        android:minSdkVersion="18"
+        android:targetSdkVersion="18" />
 
     <application
         android:allowBackup="true"
@@ -14,13 +14,17 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".FrontMenuActivity"
+            android:name="com.dcu.redmonj9.whichprep.FrontMenuActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.dcu.redmonj9.whichprep.QuizActivity"
+            android:label="@string/title_activity_quiz" >
         </activity>
     </application>
 
