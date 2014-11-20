@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class PrepScrubber {
 		
-	public String containsPrep(String sentence, ArrayList<String> preps){
+	public static String containsPrep(String sentence, ArrayList<String> preps){
 		String result = "";
 		for(String prep: preps){
 			if(sentence.contains(" "+prep+" "))
@@ -13,7 +13,7 @@ public class PrepScrubber {
 		return result;
 	}
 	
-	public String removePrep(String sentence, String prep){
+	public static String removePrep(String sentence, String prep){
 		return sentence.replace(prep, "____");
 	}
 }
