@@ -4,6 +4,17 @@ ehthumbs.db
 
 # Folder config file
 Desktop.ini
+bin/
+gen/
+*.apk
+*.ap_
+*.dex
+*.class
+.gradle
+build/
+local.properties
+proguard/
+.log
 
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
@@ -41,3 +52,4 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+
