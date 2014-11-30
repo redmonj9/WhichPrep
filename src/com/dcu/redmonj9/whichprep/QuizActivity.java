@@ -10,6 +10,7 @@ import com.dcu.redmonj9.whichprep.prepositions.PrepScrubber;
 import com.example.whichprep.R;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,6 +23,7 @@ public class QuizActivity extends Activity implements OnClickListener{
 
 	private String key = "";
 	private int points = 0;
+	private int numQs = 1;
 	private TextView questionField;
 	private TextView pointsField;
 	private Button option1;
@@ -57,7 +59,7 @@ public class QuizActivity extends Activity implements OnClickListener{
 	
 	public void runQuiz(){
 		pointsField.setText(scoreText+""+points);
-		if(!questions.empty()){
+		if(numQs <= 10){
 			String question = questions.pop();
 			String prep = PrepScrubber.containsPrep(question, Dictionary.getPrepositions());
 			questionField.setText(PrepScrubber.removePrep(question, PrepScrubber.containsPrep(question, Dictionary.getPrepositions())));
@@ -76,40 +78,25 @@ public class QuizActivity extends Activity implements OnClickListener{
 			option3.setText(answersOptions.pop());
 			option4.setText(answersOptions.pop());
 		} else {
-			questionField.setText("Quiz Complete");
+			Intent i = new Intent(this, QuizResultsActivity.class);
+			i.putExtra("points", points);
+			finish();
+			startActivity(i);
 		}
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.quiz, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
 		String clickedAnswer = ((Button) v).getText().toString();
 		TextView displayResult = (TextView) findViewById(R.id.question_result);
 		if(clickedAnswer.equals(key)){
-			displayResult.setText("Correct!!! :D");
+			displayResult.setText("Correct");
 			points++;
+			numQs++;
 			runQuiz();
 		} else {
-			displayResult.setText("Wrongo!!! :(");
+			displayResult.setText("Incorrect");
+			numQs++;
 			runQuiz();
 		}
 	}
