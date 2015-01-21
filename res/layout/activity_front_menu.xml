@@ -14,14 +14,17 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="Quiz" />
+        android:text="Quiz"
+        android:textStyle="bold" />
 
     <Button
-        android:id="@+id/timer_button"
-        android:layout_width="fill_parent"
+        android:id="@+id/timed_quiz_button"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/quiz_button"
+        android:layout_alignParentRight="true"
         android:layout_below="@+id/quiz_button"
-        android:layout_centerHorizontal="true"
-        android:text="Timer Task" />
+        android:text="Timed Quiz"
+        android:textStyle="bold" />
 
 </RelativeLayout>

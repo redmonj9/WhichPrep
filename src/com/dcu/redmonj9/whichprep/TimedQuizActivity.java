@@ -18,7 +18,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class QuizActivity extends Activity implements OnClickListener{
+public class TimedQuizActivity extends Activity implements OnClickListener{
 
 	private String key = "";
 	private int points = 0;
@@ -56,15 +56,16 @@ public class QuizActivity extends Activity implements OnClickListener{
 		answersOptions = new Stack<String>();
 		questions.addAll(Dictionary.getDictionary());
 		Collections.shuffle(questions, new Random(System.nanoTime()));
+		progressBar.setProgress(300);
+		myCountDownTimer = new MyCountDownTimer(30000, 50);
+		myCountDownTimer.start();
+		progressBar.setMax(300);
 		runQuiz();
 	}
 	
 	public void runQuiz(){
 		pointsField.setText(scoreText+""+points);
 		if(numQs <= 10){
-			progressBar.setProgress(100);
-			myCountDownTimer = new MyCountDownTimer(10000, 50);
-			myCountDownTimer.start();
 			String question = questions.pop();
 			String prep = PrepScrubber.containsPrep(question, Dictionary.getPrepositions());
 			questionField.setText(numQs + ". " + PrepScrubber.removePrep(question, PrepScrubber.containsPrep(question, Dictionary.getPrepositions())));
@@ -94,7 +95,6 @@ public class QuizActivity extends Activity implements OnClickListener{
 	public void onClick(View v) {
 		String clickedAnswer = ((Button) v).getText().toString();
 		TextView displayResult = (TextView) findViewById(R.id.question_result);
-		myCountDownTimer.cancel();
 		if(clickedAnswer.equals(key)){
 			displayResult.setText("Correct");
 			points++;
@@ -131,7 +131,10 @@ public class QuizActivity extends Activity implements OnClickListener{
 		public void onFinish() {
 			numQs++;
 			this.cancel();
-			runQuiz();
+			Intent i = new Intent(TimedQuizActivity.this, QuizResultsActivity.class);
+			i.putExtra("points", points);
+			finish();
+			startActivity(i);
 		}
 		
 	}
