@@ -6,7 +6,7 @@ import java.util.Random;
 import java.util.Stack;
 import com.dcu.redmonj9.whichprep.prepositions.Dictionary;
 import com.dcu.redmonj9.whichprep.prepositions.PrepScrubber;
-import com.example.whichprep.R;
+import com.dcu.redmonj9.whichprep.R;
 
 import android.app.Activity;
 import android.content.Intent;

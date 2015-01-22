@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+    <style name="QuizButtonHolder">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">0.5</item>
+        <item name="android:paddingBottom">1dp</item>
+        <item name="android:paddingLeft">1dp</item>
+        <item name="android:paddingRight">1dp</item>
+        <item name="android:paddingTop">1dp</item>
+    </style>
+    
+    <style name="QuizButton">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:background">@drawable/roundbutton</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    
+    <color name="androidBlue1">#33B5E5</color>
+    <color name="androidBlue2">#0099CC</color>
+    <color name="androidPurple1">#AA66CC</color>
+    <color name="androidPurple2">#9933CC</color>
+    <color name="androidGreen1">#99CC00</color>
+    <color name="androidGreen2">#669900</color>
+    <color name="androidOrange1">#FFBB33</color>
+    <color name="androidOrange2">#FF8800</color>
+    <color name="androidRed1">#FF4444</color>
+    <color name="androidRed2">#CC0000</color>
+</resources>

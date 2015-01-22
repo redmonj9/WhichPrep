@@ -1,6 +1,6 @@
 package com.dcu.redmonj9.whichprep;
 
-import com.example.whichprep.R;
+import com.dcu.redmonj9.whichprep.R;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -24,20 +24,11 @@ public class FrontMenuActivity extends Activity implements OnClickListener{
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		String buttonText = ((Button) v).getText().toString();
 		Intent i = new Intent();
 		if(v.getId()==R.id.quiz_button)
 			i = new Intent(this, QuizActivity.class);
 		else if(v.getId()==R.id.timed_quiz_button)
 			i = new Intent(this, TimedQuizActivity.class);
 		startActivity(i);
-		
-		
-		/*
-		 * if(v.getId()==R.id.quiz_button)
-		 * 	   i = new Intent(this, QuizActivity.class);
-		 * else if(v.getId()==R.id.timed_quiz_button)
-		 * 	   i = new Intent(this, TimedQuizActivity.class);
-		 */
 	}
 }

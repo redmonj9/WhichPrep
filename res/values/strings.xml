@@ -2,13 +2,13 @@
 <resources>
 
     <string name="app_name">WhichPrep</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
     <string name="title_activity_quiz">QuizActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="title_activity_quiz_results">QuizResultsActivity</string>
     <string name="title_activity_android_timer_tast_example">AndroidTimerTastExample</string>
     <string name="title_activity_timed_quiz">TimedQuizActivity</string>
+    <string name="answer_placeholder">Option</string>
+    <string name="question_placeholder">0. Placeholder Question</string>
+    <string name="score_placeholder">Your Score: 0</string>
+    <string name="result_placeholder">Result</string>
 
 </resources>
