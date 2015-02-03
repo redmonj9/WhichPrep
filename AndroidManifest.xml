@@ -14,25 +14,29 @@
         android:label="WhichPrep"
         android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         <activity
-            android:name="com.dcu.redmonj9.whichprep.FrontMenuActivity"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:name=".FrontMenuActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+        </activity>
+        <activity
+            android:name=".QuizActivity"
             android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".QuizResultsActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity android:name=".TimedQuizActivity" >
+        </activity>
+        <activity
+            android:name=".SplashActivity"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:label="@string/title_activity_splash" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name="com.dcu.redmonj9.whichprep.QuizActivity"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name="com.dcu.redmonj9.whichprep.QuizResultsActivity"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name="com.dcu.redmonj9.whichprep.TimedQuizActivity">
         </activity>
     </application>
 
