@@ -10,7 +10,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/icon"
         android:label="WhichPrep"
         android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         <activity
@@ -30,8 +30,7 @@
         </activity>
         <activity
             android:name=".SplashActivity"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-            android:label="@string/title_activity_splash" >
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

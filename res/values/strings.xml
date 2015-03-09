@@ -9,7 +9,7 @@
     <string name="answer_placeholder">Option</string>
     <string name="question_placeholder">0. Placeholder Question</string>
     <string name="score_placeholder">Your Score: 0</string>
-    <string name="result_placeholder">Result</string>
+    <string name="result_placeholder"> </string>
     <string name="title_activity_splash">SplashActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>

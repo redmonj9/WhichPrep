@@ -8,19 +8,5 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.dcu.redmonj9.whichprep.SplashActivity" >
-
-    <LinearLayout
-        style="@style/QuizButtonHolder"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true" >
-
-        <Button
-            android:id="@+id/timed_quiz_button"
-            style="@style/QuizButton"
-            android:text=""
-            android:textStyle="bold" />
-    </LinearLayout>
     
 </RelativeLayout>

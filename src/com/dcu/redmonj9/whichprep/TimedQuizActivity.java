@@ -6,6 +6,7 @@ import java.util.Random;
 import java.util.Stack;
 import com.dcu.redmonj9.whichprep.prepositions.Dictionary;
 import com.dcu.redmonj9.whichprep.prepositions.PrepScrubber;
+import com.dcu.redmonj9.whichprep.util.WhichPrepConstants;
 import com.dcu.redmonj9.whichprep.R;
 
 import android.app.Activity;
@@ -86,6 +87,7 @@ public class TimedQuizActivity extends Activity implements OnClickListener{
 		} else {
 			Intent i = new Intent(this, QuizResultsActivity.class);
 			i.putExtra("points", points);
+			i.putExtra(WhichPrepConstants.QUIZTYPE.toString(), WhichPrepConstants.TIMEDQUIZ.toString());
 			finish();
 			startActivity(i);
 		}
@@ -133,6 +135,7 @@ public class TimedQuizActivity extends Activity implements OnClickListener{
 			this.cancel();
 			Intent i = new Intent(TimedQuizActivity.this, QuizResultsActivity.class);
 			i.putExtra("points", points);
+			i.putExtra(WhichPrepConstants.QUIZTYPE.toString(), WhichPrepConstants.TIMEDQUIZ.toString());
 			finish();
 			startActivity(i);
 		}

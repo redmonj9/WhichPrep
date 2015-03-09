@@ -1,6 +1,8 @@
 package com.dcu.redmonj9.whichprep;
 
 import com.dcu.redmonj9.whichprep.R;
+import com.dcu.redmonj9.whichprep.util.WhichPrepConstants;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,7 +19,21 @@ public class QuizResultsActivity extends Activity implements OnClickListener {
 		Bundle bundle = getIntent().getExtras();
 		setContentView(R.layout.activity_quiz_results);
 		TextView tv = (TextView) findViewById(R.id.results_points_view);
-		tv.setText("Congratulations, you got " + bundle.getInt("points") + " points");
+		String quizType = bundle.getString(WhichPrepConstants.QUIZTYPE.toString());
+		int score = bundle.getInt("points");
+		if(quizType.equals(WhichPrepConstants.NORMALQUIZ.toString())){
+			if(score == 0){
+				tv.setText("Sorry, you got no points.");
+			}else if(score == 1){
+				tv.setText("Sorry, you only got 1 point.");
+			}else if(score > 0 && score < 10){
+				tv.setText("Congratulations, you got " + score + " out of 10 points.");
+			}else if(score == 10){
+				tv.setText("Congratulations, you got a perfect " + score + " out of 10 points.");
+			}
+		}else if(quizType.equals(WhichPrepConstants.TIMEDQUIZ.toString())){
+			tv.setText("Congratulations, you got " + score + " points in 30 seconds.");
+		}
 		Button button1 = (Button) findViewById(R.id.return_to_menu_button);
 		button1.setOnClickListener(this);
 	}

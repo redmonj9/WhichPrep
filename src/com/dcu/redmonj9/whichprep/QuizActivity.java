@@ -6,6 +6,7 @@ import java.util.Random;
 import java.util.Stack;
 import com.dcu.redmonj9.whichprep.prepositions.Dictionary;
 import com.dcu.redmonj9.whichprep.prepositions.PrepScrubber;
+import com.dcu.redmonj9.whichprep.util.WhichPrepConstants;
 import com.dcu.redmonj9.whichprep.R;
 
 import android.app.Activity;
@@ -35,6 +36,7 @@ public class QuizActivity extends Activity implements OnClickListener{
 	private ArrayList<String> prepositions;
 	private final String scoreText = "Your Score: ";
 	private MyCountDownTimer myCountDownTimer;
+	private DelayCountDownTimer delay;
 	
 	@Override
  	protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +66,8 @@ public class QuizActivity extends Activity implements OnClickListener{
 		if(numQs <= 10){
 			progressBar.setProgress(100);
 			myCountDownTimer = new MyCountDownTimer(10000, 50);
-			myCountDownTimer.start();
+			delay = new DelayCountDownTimer(2000, 2000);
+			delay.start();
 			String question = questions.pop();
 			String prep = PrepScrubber.containsPrep(question, Dictionary.getPrepositions());
 			questionField.setText(numQs + ". " + PrepScrubber.removePrep(question, PrepScrubber.containsPrep(question, Dictionary.getPrepositions())));
@@ -85,6 +88,7 @@ public class QuizActivity extends Activity implements OnClickListener{
 		} else {
 			Intent i = new Intent(this, QuizResultsActivity.class);
 			i.putExtra("points", points);
+			i.putExtra(WhichPrepConstants.QUIZTYPE.toString(), WhichPrepConstants.NORMALQUIZ.toString());
 			finish();
 			startActivity(i);
 		}
@@ -95,6 +99,7 @@ public class QuizActivity extends Activity implements OnClickListener{
 		String clickedAnswer = ((Button) v).getText().toString();
 		TextView displayResult = (TextView) findViewById(R.id.question_result);
 		myCountDownTimer.cancel();
+		delay.cancel();
 		if(clickedAnswer.equals(key)){
 			displayResult.setText("Correct");
 			points++;
@@ -110,6 +115,7 @@ public class QuizActivity extends Activity implements OnClickListener{
 	@Override
 	protected void onPause() {
 		myCountDownTimer.cancel();
+		delay.cancel();
 		finish();
 		super.onPause();
 	}
@@ -131,6 +137,23 @@ public class QuizActivity extends Activity implements OnClickListener{
 			numQs++;
 			this.cancel();
 			runQuiz();
+		}
+		
+	}
+	
+	public class DelayCountDownTimer extends CountDownTimer{
+
+		public DelayCountDownTimer(long millisInFuture, long countDownInterval) {
+			super(millisInFuture, countDownInterval);
+		}
+
+		@Override
+		public void onTick(long millisUntilFinished) {}
+
+		@Override
+		public void onFinish() {
+			this.cancel();
+			myCountDownTimer.start();
 		}
 		
 	}
