@@ -44,7 +44,7 @@ public class QuizActivity extends Activity implements OnClickListener{
 	private final String scoreText = "Your Score: ";
 	private MyCountDownTimer myCountDownTimer;
 	private DelayCountDownTimer delay;
-	private String[] mPlanetTitles;
+	private String[] mDrawerMenuItems;
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
@@ -53,11 +53,11 @@ public class QuizActivity extends Activity implements OnClickListener{
  	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_quiz);
-		mPlanetTitles = getResources().getStringArray(R.array.drawer_list);
+		mDrawerMenuItems = getResources().getStringArray(R.array.drawer_list);
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
 		
-		mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, mPlanetTitles));
+		mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, mDrawerMenuItems));
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 		mDrawerToggle = new ActionBarDrawerToggle(
 				this,                  /* host Activity */

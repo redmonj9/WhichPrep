@@ -13,13 +13,15 @@ import android.widget.TextView;
 
 public class QuizResultsActivity extends Activity implements OnClickListener {
 
+	private static String quizType;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Bundle bundle = getIntent().getExtras();
 		setContentView(R.layout.activity_quiz_results);
 		TextView tv = (TextView) findViewById(R.id.results_points_view);
-		String quizType = bundle.getString(WhichPrepConstants.QUIZTYPE.toString());
+		quizType = bundle.getString(WhichPrepConstants.QUIZTYPE.toString());
 		int score = bundle.getInt("points");
 		if(quizType.equals(WhichPrepConstants.NORMALQUIZ.toString())){
 			if(score == 0){
@@ -45,15 +47,24 @@ public class QuizResultsActivity extends Activity implements OnClickListener {
 			}
 		}
 		Button button1 = (Button) findViewById(R.id.return_to_menu_button);
+		Button button2 = (Button) findViewById(R.id.retry_button);
 		button1.setOnClickListener(this);
+		button2.setOnClickListener(this);
 	}
 
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
 		Intent i = new Intent();
 		if(v.getId()==R.id.return_to_menu_button)
 			i = new Intent(this, FrontMenuActivity.class);
+		else if(v.getId()==R.id.retry_button){
+			if(quizType.equals(WhichPrepConstants.NORMALQUIZ))
+				i = new Intent(this, QuizActivity.class);
+			else if(quizType.equals(WhichPrepConstants.TIMEDQUIZ))
+				i = new Intent(this, TimedQuizActivity.class);
+			else if(quizType.equals(WhichPrepConstants.CASUALQUIZ))
+				i = new Intent(this, CasualQuizActivity.class);
+		}
 		finish();
 		startActivity(i);
 	}
