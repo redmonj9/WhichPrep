@@ -31,8 +31,18 @@ public class QuizResultsActivity extends Activity implements OnClickListener {
 			}else if(score == 10){
 				tv.setText("Congratulations, you got a perfect " + score + " out of 10 points.");
 			}
-		}else if(quizType.equals(WhichPrepConstants.TIMEDQUIZ.toString())){
+		} else if(quizType.equals(WhichPrepConstants.TIMEDQUIZ.toString())){
 			tv.setText("Congratulations, you got " + score + " points in 30 seconds.");
+		} else if(quizType.equals(WhichPrepConstants.CASUALQUIZ.toString())){
+			if(score == 0){
+				tv.setText("Sorry, you got no points.");
+			}else if(score == 1){
+				tv.setText("Sorry, you only got 1 point.");
+			}else if(score > 0 && score < 10){
+				tv.setText("Congratulations, you got " + score + " out of 10 points.");
+			}else if(score == 10){
+				tv.setText("Congratulations, you got a perfect " + score + " out of 10 points.");
+			}
 		}
 		Button button1 = (Button) findViewById(R.id.return_to_menu_button);
 		button1.setOnClickListener(this);

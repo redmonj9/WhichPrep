@@ -13,12 +13,19 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.widget.DrawerLayout;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+@SuppressWarnings("deprecation")
 public class QuizActivity extends Activity implements OnClickListener{
 
 	private String key = "";
@@ -37,11 +44,43 @@ public class QuizActivity extends Activity implements OnClickListener{
 	private final String scoreText = "Your Score: ";
 	private MyCountDownTimer myCountDownTimer;
 	private DelayCountDownTimer delay;
+	private String[] mPlanetTitles;
+	private DrawerLayout mDrawerLayout;
+	private ListView mDrawerList;
+	private ActionBarDrawerToggle mDrawerToggle;
 	
 	@Override
  	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_quiz);
+		mPlanetTitles = getResources().getStringArray(R.array.drawer_list);
+		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+		mDrawerList = (ListView) findViewById(R.id.left_drawer);
+		
+		mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, mPlanetTitles));
+		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+		mDrawerToggle = new ActionBarDrawerToggle(
+				this,                  /* host Activity */
+                mDrawerLayout,         /* DrawerLayout object */
+                R.drawable.ic_drawer,  /* nav drawer icon to replace 'Up' caret */
+                R.string.drawer_open,  /* "open drawer" description */
+                R.string.drawer_close  /* "close drawer" description */
+                ) {
+
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+            }
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+            }
+        };
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setHomeButtonEnabled(true);
+		
 		questionField = (TextView) findViewById(R.id.question_field);
 		pointsField = (TextView) findViewById(R.id.points_field);
 		progressBar = (ProgressBar) findViewById(R.id.progressBar1);
@@ -49,11 +88,7 @@ public class QuizActivity extends Activity implements OnClickListener{
 		option2 = (Button) findViewById(R.id.button2);
 		option3 = (Button) findViewById(R.id.button3);
 		option4 = (Button) findViewById(R.id.button4);
-		option1.setOnClickListener(this);
-		option2.setOnClickListener(this);
-		option3.setOnClickListener(this);
-		option4.setOnClickListener(this);
-
+		
 		questions = new Stack<String>();
 		answersOptions = new Stack<String>();
 		questions.addAll(Dictionary.getDictionary());
@@ -64,9 +99,17 @@ public class QuizActivity extends Activity implements OnClickListener{
 	public void runQuiz(){
 		pointsField.setText(scoreText+""+points);
 		if(numQs <= 10){
+			option1.setAlpha(0);
+			option2.setAlpha(0);
+			option3.setAlpha(0);
+			option4.setAlpha(0);
+			option1.setOnClickListener(null);
+			option2.setOnClickListener(null);
+			option3.setOnClickListener(null);
+			option4.setOnClickListener(null);
 			progressBar.setProgress(100);
 			myCountDownTimer = new MyCountDownTimer(10000, 50);
-			delay = new DelayCountDownTimer(2000, 2000);
+			delay = new DelayCountDownTimer(3000, 3000);
 			delay.start();
 			String question = questions.pop();
 			String prep = PrepScrubber.containsPrep(question, Dictionary.getPrepositions());
@@ -120,6 +163,25 @@ public class QuizActivity extends Activity implements OnClickListener{
 		super.onPause();
 	}
 	
+	@Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
+    }
+	
+	@Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Pass the event to ActionBarDrawerToggle, if it returns
+        // true, then it has handled the app icon touch event
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+          return true;
+        }
+        // Handle your other action bar items...
+
+        return super.onOptionsItemSelected(item);
+    }
+	
 	public class MyCountDownTimer extends CountDownTimer {
 
 		public MyCountDownTimer(long millisInFuture, long countDownInterval) {
@@ -152,9 +214,26 @@ public class QuizActivity extends Activity implements OnClickListener{
 
 		@Override
 		public void onFinish() {
+			option1.setAlpha(1);
+			option2.setAlpha(1);
+			option3.setAlpha(1);
+			option4.setAlpha(1);
+			option1.setOnClickListener(QuizActivity.this);
+			option2.setOnClickListener(QuizActivity.this);
+			option3.setOnClickListener(QuizActivity.this);
+			option4.setOnClickListener(QuizActivity.this);
 			this.cancel();
 			myCountDownTimer.start();
 		}
 		
+	}
+	
+	private class DrawerItemClickListener implements ListView.OnItemClickListener {
+	    @Override
+	    public void onItemClick(AdapterView parent, View view, int position, long id) {
+	    	Intent i = new Intent(QuizActivity.this, FrontMenuActivity.class);
+	    	finish();
+	    	startActivity(i);
+	    }
 	}
 }

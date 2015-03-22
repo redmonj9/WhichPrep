@@ -17,8 +17,10 @@ public class FrontMenuActivity extends Activity implements OnClickListener{
 		setContentView(R.layout.activity_front_menu);
 		Button button1 = (Button) findViewById(R.id.quiz_button);
 		Button button2 = (Button) findViewById(R.id.timed_quiz_button);
+		Button button3 = (Button) findViewById(R.id.casual_quiz_button);
 		button1.setOnClickListener(this);
 		button2.setOnClickListener(this);
+		button3.setOnClickListener(this);
 	}
 
 	@Override
@@ -29,6 +31,8 @@ public class FrontMenuActivity extends Activity implements OnClickListener{
 			i = new Intent(this, QuizActivity.class);
 		else if(v.getId()==R.id.timed_quiz_button)
 			i = new Intent(this, TimedQuizActivity.class);
+		else if(v.getId()==R.id.casual_quiz_button)
+			i = new Intent(this, CasualQuizActivity.class);
 		startActivity(i);
 	}
 }

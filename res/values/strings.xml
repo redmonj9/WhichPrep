@@ -9,9 +9,15 @@
     <string name="answer_placeholder">Option</string>
     <string name="question_placeholder">0. Placeholder Question</string>
     <string name="score_placeholder">Your Score: 0</string>
-    <string name="result_placeholder"> </string>
+    <string name="result_placeholder"></string>
     <string name="title_activity_splash">SplashActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_casual_quiz">CasualQuizActivity</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string-array name="drawer_list">
+        <item>Cancel</item>
+    </string-array>
 
 </resources>
