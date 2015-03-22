@@ -41,6 +41,8 @@ public class QuizActivity extends Activity implements OnClickListener{
 	private Stack<String> questions;
 	private Stack<String> answersOptions;
 	private ArrayList<String> prepositions;
+	private ArrayList<String> incorrectQuestions =  new ArrayList<String>();
+	private ArrayList<String> incorrectAnswers = new ArrayList<String>();
 	private final String scoreText = "Your Score: ";
 	private MyCountDownTimer myCountDownTimer;
 	private DelayCountDownTimer delay;
@@ -131,6 +133,8 @@ public class QuizActivity extends Activity implements OnClickListener{
 		} else {
 			Intent i = new Intent(this, QuizResultsActivity.class);
 			i.putExtra("points", points);
+			i.putStringArrayListExtra("incorrectQuestions", incorrectQuestions);
+			i.putStringArrayListExtra("incorrectAnswers", incorrectAnswers);
 			i.putExtra(WhichPrepConstants.QUIZTYPE.toString(), WhichPrepConstants.NORMALQUIZ.toString());
 			finish();
 			startActivity(i);
@@ -150,6 +154,8 @@ public class QuizActivity extends Activity implements OnClickListener{
 			runQuiz();
 		} else {
 			displayResult.setText("Incorrect");
+			incorrectQuestions.add(questionField.getText().toString());
+			incorrectAnswers.add(key);
 			numQs++;
 			runQuiz();
 		}

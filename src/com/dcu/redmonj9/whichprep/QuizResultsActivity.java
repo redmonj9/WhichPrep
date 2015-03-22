@@ -1,5 +1,7 @@
 package com.dcu.redmonj9.whichprep;
 
+import java.util.ArrayList;
+
 import com.dcu.redmonj9.whichprep.R;
 import com.dcu.redmonj9.whichprep.util.WhichPrepConstants;
 
@@ -23,6 +25,8 @@ public class QuizResultsActivity extends Activity implements OnClickListener {
 		TextView tv = (TextView) findViewById(R.id.results_points_view);
 		quizType = bundle.getString(WhichPrepConstants.QUIZTYPE.toString());
 		int score = bundle.getInt("points");
+		ArrayList<String> incorrectQuestions = bundle.getStringArrayList("incorrectQuestions");
+		ArrayList<String> incorrectAnswers = bundle.getStringArrayList("incorrectAnswers");
 		if(quizType.equals(WhichPrepConstants.NORMALQUIZ.toString())){
 			if(score == 0){
 				tv.setText("Sorry, you got no points.");
@@ -58,11 +62,11 @@ public class QuizResultsActivity extends Activity implements OnClickListener {
 		if(v.getId()==R.id.return_to_menu_button)
 			i = new Intent(this, FrontMenuActivity.class);
 		else if(v.getId()==R.id.retry_button){
-			if(quizType.equals(WhichPrepConstants.NORMALQUIZ))
+			if(quizType.equals(WhichPrepConstants.NORMALQUIZ.toString()))
 				i = new Intent(this, QuizActivity.class);
-			else if(quizType.equals(WhichPrepConstants.TIMEDQUIZ))
+			else if(quizType.equals(WhichPrepConstants.TIMEDQUIZ.toString()))
 				i = new Intent(this, TimedQuizActivity.class);
-			else if(quizType.equals(WhichPrepConstants.CASUALQUIZ))
+			else if(quizType.equals(WhichPrepConstants.CASUALQUIZ.toString()))
 				i = new Intent(this, CasualQuizActivity.class);
 		}
 		finish();
