@@ -14,7 +14,7 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
-        tools:context="com.dcu.redmonj9.whichprep.QuizActivity" >
+        tools:context="com.dcu.redmonj9.whichprep.activities.QuizActivity" >
 
         <TextView
             android:id="@+id/question_field"
@@ -36,6 +36,16 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textStyle="bold" />
 
+        <TextView
+            android:id="@+id/plus_points"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/points_field"
+            android:layout_toRightOf="@+id/points_field"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textStyle="bold"
+            android:text="" />
+        
         <RelativeLayout
             android:id="@+id/relativeLayout1"
             android:layout_width="match_parent"
@@ -109,6 +119,7 @@
             android:layout_above="@+id/question_result"
             android:layout_alignParentEnd="true"
             android:layout_alignParentStart="true" />
+
     </RelativeLayout>
 
     <ListView
@@ -116,7 +127,7 @@
         android:layout_width="240dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="#111"
+        android:background="#1F6D89"
         android:choiceMode="singleChoice"
         android:divider="@android:color/transparent"
         android:dividerHeight="0dp" >

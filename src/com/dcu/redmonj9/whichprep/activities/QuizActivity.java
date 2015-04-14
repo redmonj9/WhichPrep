@@ -1,11 +1,12 @@
-package com.dcu.redmonj9.whichprep;
+package com.dcu.redmonj9.whichprep.activities;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Random;
 import java.util.Stack;
+
 import com.dcu.redmonj9.whichprep.prepositions.Dictionary;
-import com.dcu.redmonj9.whichprep.prepositions.PrepScrubber;
+import com.dcu.redmonj9.whichprep.util.Quiz;
+import com.dcu.redmonj9.whichprep.util.QuizItem;
 import com.dcu.redmonj9.whichprep.util.WhichPrepConstants;
 import com.dcu.redmonj9.whichprep.R;
 
@@ -18,6 +19,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -26,9 +30,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 @SuppressWarnings("deprecation")
-public class QuizActivity extends Activity implements OnClickListener{
+public class QuizActivity extends Activity implements OnClickListener, AnimationListener{
 
-	private String key = "";
 	private int points = 0;
 	private int numQs = 1;
 	private TextView questionField;
@@ -38,22 +41,26 @@ public class QuizActivity extends Activity implements OnClickListener{
 	private Button option3;
 	private Button option4;
 	private ProgressBar progressBar;
-	private Stack<String> questions;
+	private Quiz quiz;
+	private QuizItem question;
 	private Stack<String> answersOptions;
 	private ArrayList<String> prepositions;
 	private ArrayList<String> incorrectQuestions =  new ArrayList<String>();
-	private ArrayList<String> incorrectAnswers = new ArrayList<String>();
 	private final String scoreText = "Your Score: ";
 	private MyCountDownTimer myCountDownTimer;
-	private DelayCountDownTimer delay;
 	private String[] mDrawerMenuItems;
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
+	private Animation animFadeIn;
+	private Animation pointsEarnedFadeIn;
+	private Animation pointsEarnedFadeOut;
+	private TextView pointsEarned;
 	
 	@Override
  	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		overridePendingTransition(R.anim.screen_transition_in, R.anim.screen_transition_out);
 		setContentView(R.layout.activity_quiz);
 		mDrawerMenuItems = getResources().getStringArray(R.array.drawer_list);
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -86,40 +93,43 @@ public class QuizActivity extends Activity implements OnClickListener{
 		questionField = (TextView) findViewById(R.id.question_field);
 		pointsField = (TextView) findViewById(R.id.points_field);
 		progressBar = (ProgressBar) findViewById(R.id.progressBar1);
+		pointsEarned = (TextView) findViewById(R.id.plus_points);
 		option1 = (Button) findViewById(R.id.button1);
 		option2 = (Button) findViewById(R.id.button2);
 		option3 = (Button) findViewById(R.id.button3);
 		option4 = (Button) findViewById(R.id.button4);
 		
-		questions = new Stack<String>();
+		animFadeIn = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
+		pointsEarnedFadeIn = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.points_flash_in);
+		pointsEarnedFadeOut = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.points_flash_out);
+		animFadeIn.setAnimationListener(this);
+		pointsEarnedFadeIn.setAnimationListener(this);
+		pointsEarnedFadeOut.setAnimationListener(this);
+
+		quiz = new Quiz(Dictionary.getDictionary());
 		answersOptions = new Stack<String>();
-		questions.addAll(Dictionary.getDictionary());
-		Collections.shuffle(questions, new Random(System.nanoTime()));
 		runQuiz();
 	}
 	
 	public void runQuiz(){
 		pointsField.setText(scoreText+""+points);
 		if(numQs <= 10){
-			option1.setAlpha(0);
-			option2.setAlpha(0);
-			option3.setAlpha(0);
-			option4.setAlpha(0);
 			option1.setOnClickListener(null);
 			option2.setOnClickListener(null);
 			option3.setOnClickListener(null);
 			option4.setOnClickListener(null);
 			progressBar.setProgress(100);
-			myCountDownTimer = new MyCountDownTimer(10000, 50);
-			delay = new DelayCountDownTimer(3000, 3000);
-			delay.start();
-			String question = questions.pop();
-			String prep = PrepScrubber.containsPrep(question, Dictionary.getPrepositions());
-			questionField.setText(numQs + ". " + PrepScrubber.removePrep(question, PrepScrubber.containsPrep(question, Dictionary.getPrepositions())));
+			myCountDownTimer = new MyCountDownTimer(10000, 25);
+			option1.startAnimation(animFadeIn);
+			option2.startAnimation(animFadeIn);
+			option3.startAnimation(animFadeIn);
+			option4.startAnimation(animFadeIn);
+			question = quiz.getQuestion();
+			String prep = question.getKey();
+			questionField.setText(numQs + ". " + question.getEditedSentence());
 			prepositions = Dictionary.getPrepositions();
 			prepositions.remove(prepositions.indexOf(prep));
 			answersOptions.push(prep);
-			key = prep;
 			Collections.shuffle(prepositions);
 			answersOptions.push(prepositions.get(0));
 			answersOptions.push(prepositions.get(1));
@@ -132,9 +142,8 @@ public class QuizActivity extends Activity implements OnClickListener{
 			option4.setText(answersOptions.pop());
 		} else {
 			Intent i = new Intent(this, QuizResultsActivity.class);
-			i.putExtra("points", points);
-			i.putStringArrayListExtra("incorrectQuestions", incorrectQuestions);
-			i.putStringArrayListExtra("incorrectAnswers", incorrectAnswers);
+			i.putExtra(WhichPrepConstants.POINTS.toString(), points);
+			i.putStringArrayListExtra(WhichPrepConstants.INCORRECTQUESTIONS.toString(), incorrectQuestions);
 			i.putExtra(WhichPrepConstants.QUIZTYPE.toString(), WhichPrepConstants.NORMALQUIZ.toString());
 			finish();
 			startActivity(i);
@@ -143,28 +152,27 @@ public class QuizActivity extends Activity implements OnClickListener{
 
 	@Override
 	public void onClick(View v) {
+
 		String clickedAnswer = ((Button) v).getText().toString();
 		TextView displayResult = (TextView) findViewById(R.id.question_result);
-		myCountDownTimer.cancel();
-		delay.cancel();
-		if(clickedAnswer.equals(key)){
+		
+		if(clickedAnswer.equals(question.getKey())){
 			displayResult.setText("Correct");
-			points++;
-			numQs++;
-			runQuiz();
+			points+=(progressBar.getProgress()/5);
+			pointsEarned.setText("  +" + progressBar.getProgress()/5);
+			pointsEarned.startAnimation(pointsEarnedFadeIn);
 		} else {
 			displayResult.setText("Incorrect");
-			incorrectQuestions.add(questionField.getText().toString());
-			incorrectAnswers.add(key);
-			numQs++;
-			runQuiz();
+			incorrectQuestions.add(question.getOriginalSentence());
 		}
+		numQs++;
+		myCountDownTimer.cancel();
+		runQuiz();
 	}
 	
 	@Override
 	protected void onPause() {
 		myCountDownTimer.cancel();
-		delay.cancel();
 		finish();
 		super.onPause();
 	}
@@ -209,37 +217,33 @@ public class QuizActivity extends Activity implements OnClickListener{
 		
 	}
 	
-	public class DelayCountDownTimer extends CountDownTimer{
+	private class DrawerItemClickListener implements ListView.OnItemClickListener {
+	    @Override
+	    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+	    	if(mDrawerMenuItems[position].equals("Cancel")){
+	    		Intent i = new Intent(QuizActivity.this, FrontMenuActivity.class);
+	    		finish();
+	    		startActivity(i);
+	    	}
+	    }
+	}
 
-		public DelayCountDownTimer(long millisInFuture, long countDownInterval) {
-			super(millisInFuture, countDownInterval);
-		}
+	@Override
+	public void onAnimationStart(Animation animation) {}
 
-		@Override
-		public void onTick(long millisUntilFinished) {}
-
-		@Override
-		public void onFinish() {
-			option1.setAlpha(1);
-			option2.setAlpha(1);
-			option3.setAlpha(1);
-			option4.setAlpha(1);
+	@Override
+	public void onAnimationEnd(Animation animation) {
+		if(animation==animFadeIn){
 			option1.setOnClickListener(QuizActivity.this);
 			option2.setOnClickListener(QuizActivity.this);
 			option3.setOnClickListener(QuizActivity.this);
 			option4.setOnClickListener(QuizActivity.this);
-			this.cancel();
 			myCountDownTimer.start();
+		} else if(animation==pointsEarnedFadeIn){
+			pointsEarned.startAnimation(pointsEarnedFadeOut);
 		}
-		
 	}
-	
-	private class DrawerItemClickListener implements ListView.OnItemClickListener {
-	    @Override
-	    public void onItemClick(AdapterView parent, View view, int position, long id) {
-	    	Intent i = new Intent(QuizActivity.this, FrontMenuActivity.class);
-	    	finish();
-	    	startActivity(i);
-	    }
-	}
+
+	@Override
+	public void onAnimationRepeat(Animation animation) {}
 }

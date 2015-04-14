@@ -16,8 +16,9 @@
     <string name="title_activity_casual_quiz">CasualQuizActivity</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
+    <string name="title_activity_statistics">StatisticsActivity</string>
+    <string name="facebook_app_id"></string>
     <string-array name="drawer_list">
         <item>Cancel</item>
     </string-array>
-
 </resources>

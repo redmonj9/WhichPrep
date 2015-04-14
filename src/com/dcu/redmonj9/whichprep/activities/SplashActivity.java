@@ -1,5 +1,6 @@
-package com.dcu.redmonj9.whichprep;
+package com.dcu.redmonj9.whichprep.activities;
 
+import com.dcu.redmonj9.whichprep.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;

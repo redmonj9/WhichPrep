@@ -12,27 +12,21 @@
         android:allowBackup="true"
         android:icon="@drawable/icon"
         android:label="WhichPrep"
-        android:theme="@android:style/Theme.Holo" >
-        <activity
-            android:name=".FrontMenuActivity"
-            android:screenOrientation="portrait" >
+        android:theme="@style/MyCustomTheme" >
+        <activity android:name="com.dcu.redmonj9.whichprep.activities.FrontMenuActivity">
+        </activity>
+        <activity android:name="com.dcu.redmonj9.whichprep.activities.QuizActivity">
+        </activity>
+        <activity android:name="com.dcu.redmonj9.whichprep.activities.QuizResultsActivity">
+        </activity>
+        <activity android:name="com.dcu.redmonj9.whichprep.activities.CasualQuizActivity" >
+        </activity>
+        <activity android:name="com.dcu.redmonj9.whichprep.activities.TimedQuizActivity" >
+        </activity>
+        <activity android:name="com.dcu.redmonj9.whichprep.activities.StatisticsActivity">
         </activity>
         <activity
-            android:name=".QuizActivity"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name=".QuizResultsActivity"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
-            android:name=".CasualQuizActivity"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity android:name=".TimedQuizActivity" >
-        </activity>
-        <activity
-            android:name=".SplashActivity"
+            android:name="com.dcu.redmonj9.whichprep.activities.SplashActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

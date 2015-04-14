@@ -24,6 +24,15 @@
     <style name="ProgressBar" parent="@android:style/Widget.ProgressBar.Horizontal">
     </style>
     
+    <style name="MyCustomTheme" parent="@android:style/Theme.Holo">
+        <item name="android:actionBarStyle">@style/MyActionBarTheme</item>
+    </style>
+    
+    <style name="MyActionBarTheme" parent="@android:style/Widget.Holo.ActionBar">
+        <item name="android:background">@color/androidBlue2</item>
+        <item name="android:text"></item>
+    </style>
+    
     <color name="androidBlue1">#33B5E5</color>
     <color name="androidBlue2">#0099CC</color>
     <color name="androidPurple1">#AA66CC</color>

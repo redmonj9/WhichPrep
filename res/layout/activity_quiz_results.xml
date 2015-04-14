@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.dcu.redmonj9.whichprep.QuizResultsActivity" >
+    tools:context="com.dcu.redmonj9.whichprep.activities.QuizResultsActivity" >
 
     <TextView
         android:id="@+id/results_points_view"
@@ -15,32 +15,56 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="Congratulations, you got ? points"
-        android:textAppearance="?android:attr/textAppearanceLarge" 
-        android:textStyle="bold"/>
+        android:paddingBottom="10dp"
+        android:text="Congratulations, you got ? point"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="bold" />
 
-    <LinearLayout 
-        style="@style/QuizButtonHolder"
-        android:id="@+id/return_button_holder"
+    <TextView 
+        android:id="@+id/feedback"
         android:layout_width="match_parent"
-        android:layout_below="@+id/results_points_view"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true">
+        android:layout_below="@+id/results_points_view"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="bold"/>
+    
+    <ListView
+        android:id="@+id/wrong_questions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:layout_above="@+id/return_button_holder"
+        android:layout_below="@+id/feedback"
+        android:paddingBottom="10dp" >
+
+    </ListView>
+
+    <LinearLayout
+        android:id="@+id/return_button_holder"
+        style="@style/QuizButtonHolder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/retry_button_holder"
+        android:layout_centerHorizontal="true" >
+
         <Button
             android:id="@+id/return_to_menu_button"
             style="@style/QuizButton"
-        	  android:text="Main Menu"/>
+            android:text="Main Menu" />
     </LinearLayout>
-    <LinearLayout 
+
+    <LinearLayout
+        android:id="@+id/retry_button_holder"
         style="@style/QuizButtonHolder"
         android:layout_width="match_parent"
-        android:layout_below="@+id/return_button_holder"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true">
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" >
+
         <Button
             android:id="@+id/retry_button"
             style="@style/QuizButton"
-            android:text="Play Again?"/>
+            android:text="Play Again?" />
     </LinearLayout>
 
 </RelativeLayout>

@@ -1,12 +1,12 @@
-package com.dcu.redmonj9.whichprep;
+package com.dcu.redmonj9.whichprep.activities;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Random;
 import java.util.Stack;
 
 import com.dcu.redmonj9.whichprep.prepositions.Dictionary;
-import com.dcu.redmonj9.whichprep.prepositions.PrepScrubber;
+import com.dcu.redmonj9.whichprep.util.Quiz;
+import com.dcu.redmonj9.whichprep.util.QuizItem;
 import com.dcu.redmonj9.whichprep.util.WhichPrepConstants;
 import com.dcu.redmonj9.whichprep.R;
 
@@ -25,10 +25,9 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-@SuppressWarnings("deprecation")
+@SuppressWarnings({"deprecation", "rawtypes"})
 public class CasualQuizActivity extends Activity implements OnClickListener{
 
-	private String key = "";
 	private int points = 0;
 	private int numQs = 1;
 	private TextView questionField;
@@ -38,9 +37,11 @@ public class CasualQuizActivity extends Activity implements OnClickListener{
 	private Button option3;
 	private Button option4;
 	private ProgressBar progressBar;
-	private Stack<String> questions;
+	private Quiz quiz;
+	private QuizItem question;
 	private Stack<String> answersOptions;
 	private ArrayList<String> prepositions;
+	private ArrayList<String> incorrectQuestions =  new ArrayList<String>();
 	private final String scoreText = "Your Score: ";
 	private String[] mDrawerMenuItems;
 	private DrawerLayout mDrawerLayout;
@@ -50,6 +51,7 @@ public class CasualQuizActivity extends Activity implements OnClickListener{
 	@Override
  	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		overridePendingTransition(R.anim.screen_transition_in, R.anim.screen_transition_out);
 		setContentView(R.layout.activity_quiz);
 		
 		mDrawerMenuItems = getResources().getStringArray(R.array.drawer_list);
@@ -93,10 +95,8 @@ public class CasualQuizActivity extends Activity implements OnClickListener{
 		option3.setOnClickListener(this);
 		option4.setOnClickListener(this);
 
-		questions = new Stack<String>();
 		answersOptions = new Stack<String>();
-		questions.addAll(Dictionary.getDictionary());
-		Collections.shuffle(questions, new Random(System.nanoTime()));
+		quiz = new Quiz(Dictionary.getDictionary());
 		progressBar.setProgress(300);
 		progressBar.setMax(300);
 		runQuiz();
@@ -105,13 +105,12 @@ public class CasualQuizActivity extends Activity implements OnClickListener{
 	public void runQuiz(){
 		pointsField.setText(scoreText+""+points);
 		if(numQs <= 10){
-			String question = questions.pop();
-			String prep = PrepScrubber.containsPrep(question, Dictionary.getPrepositions());
-			questionField.setText(numQs + ". " + PrepScrubber.removePrep(question, PrepScrubber.containsPrep(question, Dictionary.getPrepositions())));
+			question = quiz.getQuestion();
+			String prep = question.getKey();
+			questionField.setText(numQs + ". " + question.getEditedSentence());
 			prepositions = Dictionary.getPrepositions();
 			prepositions.remove(prepositions.indexOf(prep));
 			answersOptions.push(prep);
-			key = prep;
 			Collections.shuffle(prepositions);
 			answersOptions.push(prepositions.get(0));
 			answersOptions.push(prepositions.get(1));
@@ -124,7 +123,8 @@ public class CasualQuizActivity extends Activity implements OnClickListener{
 			option4.setText(answersOptions.pop());
 		} else {
 			Intent i = new Intent(this, QuizResultsActivity.class);
-			i.putExtra("points", points);
+			i.putExtra(WhichPrepConstants.POINTS.toString(), points);
+			i.putStringArrayListExtra(WhichPrepConstants.INCORRECTQUESTIONS.toString(), incorrectQuestions);
 			i.putExtra(WhichPrepConstants.QUIZTYPE.toString(), WhichPrepConstants.CASUALQUIZ.toString());
 			finish();
 			startActivity(i);
@@ -135,13 +135,14 @@ public class CasualQuizActivity extends Activity implements OnClickListener{
 	public void onClick(View v) {
 		String clickedAnswer = ((Button) v).getText().toString();
 		TextView displayResult = (TextView) findViewById(R.id.question_result);
-		if(clickedAnswer.equals(key)){
+		if(clickedAnswer.equals(question.getKey())){
 			displayResult.setText("Correct");
 			points++;
 			numQs++;
 			runQuiz();
 		} else {
 			displayResult.setText("Incorrect");
+			incorrectQuestions.add(question.getOriginalSentence());
 			numQs++;
 			runQuiz();
 		}
