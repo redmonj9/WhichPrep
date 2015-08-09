@@ -9,6 +9,9 @@ public enum WhichPrepConstants {
 	NORMALQUIZ ("NormalQuiz"),
 	CASUALQUIZ ("CasualQuiz");
 	
-	WhichPrepConstants(String string) {
+	public final String constant;
+	
+	WhichPrepConstants(String constant) {
+		this.constant = constant;
 	}
 }

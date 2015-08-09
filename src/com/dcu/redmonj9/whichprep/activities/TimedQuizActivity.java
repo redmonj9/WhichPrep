@@ -1,7 +1,10 @@
 package com.dcu.redmonj9.whichprep.activities;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 import java.util.Stack;
 
 import com.dcu.redmonj9.whichprep.prepositions.Dictionary;
@@ -12,6 +15,7 @@ import com.dcu.redmonj9.whichprep.R;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -96,7 +100,15 @@ public class TimedQuizActivity extends Activity implements OnClickListener{
 		option3.setOnClickListener(this);
 		option4.setOnClickListener(this);
 
-		quiz = new Quiz(Dictionary.getDictionary());
+		AssetManager assetManager = getAssets();
+		InputStream inputStream;
+		int fileNo = new Random().nextInt(9);
+		try {
+			inputStream = assetManager.open("output"+fileNo+".txt");
+			quiz = new Quiz(Dictionary.getDictionary(inputStream));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
 		answersOptions = new Stack<String>();
 		progressBar.setProgress(300);
@@ -127,9 +139,9 @@ public class TimedQuizActivity extends Activity implements OnClickListener{
 			option4.setText(answersOptions.pop());
 		} else {
 			Intent i = new Intent(this, QuizResultsActivity.class);
-			i.putExtra(WhichPrepConstants.POINTS.toString(), points);
-			i.putStringArrayListExtra(WhichPrepConstants.INCORRECTQUESTIONS.toString(), incorrectQuestions);
-			i.putExtra(WhichPrepConstants.QUIZTYPE.toString(), WhichPrepConstants.TIMEDQUIZ.toString());
+			i.putExtra(WhichPrepConstants.POINTS.constant, points);
+			i.putStringArrayListExtra(WhichPrepConstants.INCORRECTQUESTIONS.constant, incorrectQuestions);
+			i.putExtra(WhichPrepConstants.QUIZTYPE.constant, WhichPrepConstants.TIMEDQUIZ.constant);
 			finish();
 			startActivity(i);
 		}
@@ -146,7 +158,7 @@ public class TimedQuizActivity extends Activity implements OnClickListener{
 			runQuiz();
 		} else {
 			displayResult.setText("Incorrect");
-			incorrectQuestions.add(question.getOriginalSentence());
+			incorrectQuestions.add("- "+question.getOriginalSentence());
 			numQs++;
 			runQuiz();
 		}
@@ -163,7 +175,6 @@ public class TimedQuizActivity extends Activity implements OnClickListener{
 
 		public MyCountDownTimer(long millisInFuture, long countDownInterval) {
 			super(millisInFuture, countDownInterval);
-			// TODO Auto-generated constructor stub
 		}
 
 		@Override

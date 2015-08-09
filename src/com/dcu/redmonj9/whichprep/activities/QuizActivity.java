@@ -1,7 +1,10 @@
 package com.dcu.redmonj9.whichprep.activities;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 import java.util.Stack;
 
 import com.dcu.redmonj9.whichprep.prepositions.Dictionary;
@@ -12,6 +15,7 @@ import com.dcu.redmonj9.whichprep.R;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -69,19 +73,17 @@ public class QuizActivity extends Activity implements OnClickListener, Animation
 		mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, mDrawerMenuItems));
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 		mDrawerToggle = new ActionBarDrawerToggle(
-				this,                  /* host Activity */
-                mDrawerLayout,         /* DrawerLayout object */
-                R.drawable.ic_drawer,  /* nav drawer icon to replace 'Up' caret */
-                R.string.drawer_open,  /* "open drawer" description */
-                R.string.drawer_close  /* "close drawer" description */
+				this,                  
+                mDrawerLayout,         
+                R.drawable.ic_drawer,  
+                R.string.drawer_open,  
+                R.string.drawer_close  
                 ) {
 
-            /** Called when a drawer has settled in a completely closed state. */
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
             }
 
-            /** Called when a drawer has settled in a completely open state. */
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
             }
@@ -106,7 +108,15 @@ public class QuizActivity extends Activity implements OnClickListener, Animation
 		pointsEarnedFadeIn.setAnimationListener(this);
 		pointsEarnedFadeOut.setAnimationListener(this);
 
-		quiz = new Quiz(Dictionary.getDictionary());
+		AssetManager assetManager = getAssets();
+		InputStream inputStream;
+		int fileNo = new Random().nextInt(9);
+		try {
+			inputStream = assetManager.open("output"+fileNo+".txt");
+			quiz = new Quiz(Dictionary.getDictionary(inputStream));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		answersOptions = new Stack<String>();
 		runQuiz();
 	}
@@ -142,9 +152,9 @@ public class QuizActivity extends Activity implements OnClickListener, Animation
 			option4.setText(answersOptions.pop());
 		} else {
 			Intent i = new Intent(this, QuizResultsActivity.class);
-			i.putExtra(WhichPrepConstants.POINTS.toString(), points);
-			i.putStringArrayListExtra(WhichPrepConstants.INCORRECTQUESTIONS.toString(), incorrectQuestions);
-			i.putExtra(WhichPrepConstants.QUIZTYPE.toString(), WhichPrepConstants.NORMALQUIZ.toString());
+			i.putExtra(WhichPrepConstants.POINTS.constant, points);
+			i.putStringArrayListExtra(WhichPrepConstants.INCORRECTQUESTIONS.constant, incorrectQuestions);
+			i.putExtra(WhichPrepConstants.QUIZTYPE.constant, WhichPrepConstants.NORMALQUIZ.constant);
 			finish();
 			startActivity(i);
 		}
@@ -163,7 +173,7 @@ public class QuizActivity extends Activity implements OnClickListener, Animation
 			pointsEarned.startAnimation(pointsEarnedFadeIn);
 		} else {
 			displayResult.setText("Incorrect");
-			incorrectQuestions.add(question.getOriginalSentence());
+			incorrectQuestions.add("- "+question.getOriginalSentence());
 		}
 		numQs++;
 		myCountDownTimer.cancel();
@@ -180,19 +190,14 @@ public class QuizActivity extends Activity implements OnClickListener, Animation
 	@Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
         mDrawerToggle.syncState();
     }
 	
 	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Pass the event to ActionBarDrawerToggle, if it returns
-        // true, then it has handled the app icon touch event
         if (mDrawerToggle.onOptionsItemSelected(item)) {
           return true;
         }
-        // Handle your other action bar items...
-
         return super.onOptionsItemSelected(item);
     }
 	
@@ -211,6 +216,9 @@ public class QuizActivity extends Activity implements OnClickListener, Animation
 		@Override
 		public void onFinish() {
 			numQs++;
+			TextView displayResult = (TextView) findViewById(R.id.question_result);
+			displayResult.setText("You ran out of time");
+			incorrectQuestions.add("- "+question.getOriginalSentence());
 			this.cancel();
 			runQuiz();
 		}

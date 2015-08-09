@@ -13,12 +13,17 @@
     <string name="title_activity_splash">SplashActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="facebook_share_string">Share on Facebook</string>
     <string name="title_activity_casual_quiz">CasualQuizActivity</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="title_activity_statistics">StatisticsActivity</string>
-    <string name="facebook_app_id"></string>
+    <string name="app_id">1589013854681352</string>
+
     <string-array name="drawer_list">
         <item>Cancel</item>
     </string-array>
+
+    <string name="title_activity_facbook_test_share">FacbookTestShareActivity</string>
+
 </resources>

@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import com.dcu.redmonj9.whichprep.prepositions.Dictionary;
 import com.dcu.redmonj9.whichprep.prepositions.PrepScrubber;
+import com.dcu.redmonj9.whichprep.prepositions.Prepositions;
 
 import junit.framework.TestCase;
 
@@ -23,6 +24,4 @@ public class PrepScrubberTest extends TestCase {
 		String result = ps.removePrep(dict.getDictionaryItem(0), ps.containsPrep(dict.getDictionaryItem(0), dict.getPrepositions()));
 		assertEquals("He will see them ____ October", result);
 	}
-	
-	
 }

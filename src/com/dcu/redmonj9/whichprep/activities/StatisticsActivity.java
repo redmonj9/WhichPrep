@@ -31,12 +31,12 @@ public class StatisticsActivity extends FragmentActivity implements OnClickListe
 		clearData.setOnClickListener(this);
 		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 		
-		standardBest.setText("Standard Best: "+settings.getInt("best"+WhichPrepConstants.NORMALQUIZ.toString(), 0));
-		standardPrev.setText("Standard Prev: "+settings.getInt("previous"+WhichPrepConstants.NORMALQUIZ.toString(), 0));
-		timedBest.setText("Timed Best: "+settings.getInt("best"+WhichPrepConstants.TIMEDQUIZ.toString(), 0));
-		timedPrev.setText("Timed Prev: "+settings.getInt("previous"+WhichPrepConstants.TIMEDQUIZ.toString(), 0));
-		casualBest.setText("Casual Best: "+settings.getInt("best"+WhichPrepConstants.CASUALQUIZ.toString(), 0));
-		casualPrev.setText("Casual Prev: "+settings.getInt("previous"+WhichPrepConstants.CASUALQUIZ.toString(), 0));
+		standardBest.setText("Standard Best: "+settings.getInt("best"+WhichPrepConstants.NORMALQUIZ.constant, 0));
+		standardPrev.setText("Standard Prev: "+settings.getInt("previous"+WhichPrepConstants.NORMALQUIZ.constant, 0));
+		timedBest.setText("Timed Best: "+settings.getInt("best"+WhichPrepConstants.TIMEDQUIZ.constant, 0));
+		timedPrev.setText("Timed Prev: "+settings.getInt("previous"+WhichPrepConstants.TIMEDQUIZ.constant, 0));
+		casualBest.setText("Casual Best: "+settings.getInt("best"+WhichPrepConstants.CASUALQUIZ.constant, 0));
+		casualPrev.setText("Casual Prev: "+settings.getInt("previous"+WhichPrepConstants.CASUALQUIZ.constant, 0));
 	}
 
 	@Override

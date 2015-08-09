@@ -7,26 +7,38 @@
     <uses-sdk
         android:minSdkVersion="18"
         android:targetSdkVersion="18" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/icon"
         android:label="WhichPrep"
         android:theme="@style/MyCustomTheme" >
-        <activity android:name="com.dcu.redmonj9.whichprep.activities.FrontMenuActivity">
+        
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/app_id"/>
+        <provider android:authorities="com.facebook.app.FacebookContentProvider1589013854681352"
+          android:name="com.facebook.FacebookContentProvider"
+          android:exported="true"/>
+        
+        <activity android:name=".activities.FrontMenuActivity" >
         </activity>
-        <activity android:name="com.dcu.redmonj9.whichprep.activities.QuizActivity">
+        <activity android:name=".activities.QuizActivity" >
         </activity>
-        <activity android:name="com.dcu.redmonj9.whichprep.activities.QuizResultsActivity">
+        <activity android:name=".activities.QuizResultsActivity" >
         </activity>
-        <activity android:name="com.dcu.redmonj9.whichprep.activities.CasualQuizActivity" >
+        <activity android:name=".activities.CasualQuizActivity" >
         </activity>
-        <activity android:name="com.dcu.redmonj9.whichprep.activities.TimedQuizActivity" >
+        <activity android:name=".activities.TimedQuizActivity" >
         </activity>
-        <activity android:name="com.dcu.redmonj9.whichprep.activities.StatisticsActivity">
+        <activity android:name=".activities.StatisticsActivity" >
         </activity>
+        <activity android:name="com.facebook.FacebookActivity"
+          android:configChanges=
+                 "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+          android:theme="@android:style/Theme.Translucent.NoTitleBar"
+          android:label="@string/app_name" />
         <activity
-            android:name="com.dcu.redmonj9.whichprep.activities.SplashActivity"
+            android:name=".activities.SplashActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
